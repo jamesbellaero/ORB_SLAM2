@@ -596,7 +596,7 @@ vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
 
 vector<MapPoint*> System::GetAllMapPoints(){
     unique_lock<mutex> lock(mMutexState);
-    return mpMap.GetAllMapPoints();
+    return mpMap->GetAllMapPoints();
 }
 
 void System::SaveMapPoints(const string& filename){
@@ -608,7 +608,7 @@ void System::SaveMapPoints(const string& filename){
     f.open(filename.c_str());
     f << fixed;
 
-    for(size_t i=0; i<vpKFs.size(); i++)
+    for(size_t i=0; i<mapPoints.size(); i++)
     {
         MapPoint* pMP = mapPoints[i];
 
