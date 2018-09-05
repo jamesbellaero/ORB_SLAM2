@@ -25,6 +25,7 @@
 #include<chrono>
 
 #include<opencv2/core/core.hpp>
+#include<ros/ros.h>
 
 #include<System.h>
 
@@ -40,7 +41,9 @@ int main(int argc, char **argv)
         cerr << endl << "Usage: ./mono_tum path_to_vocabulary path_to_settings path_to_sequence" << endl;
         return 1;
     }
-
+    ros::init(argc, argv, "Mono");
+    // Start ROS
+    ros::NodeHandle nh("~");
     // Retrieve paths to images
     vector<string> vstrImageFilenames;
     vector<double> vTimestamps;
