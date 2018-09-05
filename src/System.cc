@@ -594,4 +594,34 @@ vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
     return mTrackedKeyPointsUn;
 }
 
+vector<MapPoint*> System::GetAllMapPoints(){
+    unique_lock<mutex> lock(mMutexState);
+    return mpMap.GetAllMapPoints();
+}
+
+void System::SaveMapPoints(const string& filename){
+    cout << endl << "Saving map to " << filename << " ..." << endl;
+
+    vector<MapPoint*> mapPoints = mpMap->GetAllMapPoints();
+
+    ofstream f;
+    f.open(filename.c_str());
+    f << fixed;
+
+    for(size_t i=0; i<vpKFs.size(); i++)
+    {
+        MapPoint* pMP = mapPoints[i];
+
+       // pKF->SetPose(pKF->GetPose()*Two);
+
+        if(pMP->isBad())
+            continue;
+        cv::Mat pos = pMP->GetWorldPos();
+        f << setprecision(7) << pos.at<float>(0) << "," << pos.at<float>(1) << "," << pos.at<float>(2) <<endl;
+    }
+
+    f.close();
+    cout << endl << "map saved!" << endl;
+}
+
 } //namespace ORB_SLAM
